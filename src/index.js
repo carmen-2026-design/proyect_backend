@@ -1,60 +1,33 @@
-// import express from "express";
-// import dotenv from "dotenv";
-// import cors from "cors";
-// import router from "./routes/routes.js";
-// import connection from "./config/db.js";
-// import session from "express-session";
+import { env } from "./config/env.js"; // lo primero: carga y valida el .env (si falta algo, no arranca)
+import express from "express";
+import cors from "cors";
+import cookieParser from "cookie-parser";
+import router from "./routes/router.js";
+import connectDB from "./config/db.js";
+// import { swaggerUi, swaggerSpec } from "./config/swagger.js";
+import { notFound, errorHandler } from "./middlewares/error.middleware.js";
 
-// dotenv.config(); //permite leer las variables de entorno del fichero .env
+const app = express();
 
-// const PORT = process.env.PORT || 3000;
+// Permite que el frontend (otro origen) llame a la API.
+// credentials: true → acepta cookies; por eso el origen tiene que ser concreto, no "*"
+app.use(cors({ origin: env.FRONTEND_URL, credentials: true }));
+app.use(express.json());
+app.use(cookieParser()); // rellena req.cookies
 
-// const app = express();
+app.use("/api", router);
 
-// //midlewares
-// app.use(cors())                 //permite conectar frontend y backend separados
-// app.use(express.json())         //permite leer el body y los POST en json
-// app.use(express.urlencoded())   //permite leer el body de los POST en formularios
+// Documentación interactiva de la API: http://localhost:3000/docs
+// app.use("/docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-// //para recoger los mensajes de error controlados y mostrarlos en las ventanas 
-// app.use(session({ 
-//     secret: process.env.SESSION_SECRET,
-//     resave: false,
-//     saveUninitialized: false
-// }))
+// Siempre después de las rutas, y en este orden:
+app.use(notFound); // ninguna ruta ha respondido → 404
+app.use(errorHandler); // el último: recibe todos los errores
 
-// app.use((req,res,next)=>{
-//     res.locals.query = req.query;
-//     res.locals.userLogin = req.session?.userLogin;
-//     next();
-// })
+// Primero la base de datos; si falla, connectDB detiene la aplicación
+await connectDB();
 
-// app.use(express.static("public"));
-
-// app.use("/",router);
-
-// async function startServer() {
-//     const maxAttempts = 5;
-//     let attempts = maxAttempts;
-//     while (attempts) {
-//         try {
-//             await connection.authenticate();
-//             console.log("Conexión establecida con la base de datos");
-//             app.listen(PORT, () => {
-//                 console.log("Aplicación en marcha")
-//             })
-//             break;
-//         } catch (error) {
-//             console.error(`Intento ${maxAttempts - attempts} No se ha podido conectar a la base de datos`, error);
-//         }
-//         attempts--;
-//         await new Promise((resolve,reject)=>setTimeout(()=>{resolve()},5000));
-//     }
-//     if(attempts === 0){
-//         console.error(`no se ha podido conectar a la base de datos en ${maxAttempts} intentos`);
-//         process.exit(1);
-//     }
-
-// }
-
-// startServer();
+// Dentro del contenedor la API escucha en el 3000; APP_PORT es el puerto publicado en tu ordenador
+app.listen(3000, () => {
+  console.log(`app en marcha: http://localhost:${env.APP_PORT}/api · documentación: http://localhost:${env.APP_PORT}/docs`);
+});
