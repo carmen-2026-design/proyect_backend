@@ -13,7 +13,7 @@
 // Guardamos directamente su hash bcrypt (coste 10).
 
 const PASSWORD_HASH =
-  "$2b$10$ji280zdAqkxuv5tjkCmq0uKZ3Xp.eAUOGKoB7kCJ3IGtvsh434HZK";
+  "$2b$10$JhvCYzyk8SEpHkjlOYy30.mSEU5BkpwQ8gBhcq6nUxzqDbPLO.ka2";
 
 const now = new Date();
 
@@ -22,36 +22,43 @@ const daysAgo = (days) =>
 
 // ─── Usuarios ────────────────────────────────────────────────────────────────
 
-const admin = {
+const karla = {
   _id: new ObjectId(),
-  username: "admin",
-  email: "admin@recipia.dev",
+  username: "Karla",
+  email: "karla@recipia.dev",
   role: "admin",
 };
 
-const ana = {
+const koldo = {
   _id: new ObjectId(),
-  username: "ana",
-  email: "ana@ejemplo.com",
+  username: "Koldo",
+  email: "koldo@recipia.dev",
+  role: "admin",
+};
+
+const aurora = {
+  _id: new ObjectId(),
+  username: "Aurora",
+  email: "aurora@ejemplo.com",
   role: "user",
 };
 
-const bea = {
+const sofia = {
   _id: new ObjectId(),
-  username: "bea",
-  email: "bea@ejemplo.com",
+  username: "Sofía",
+  email: "sofia@ejemplo.com",
   role: "user",
 };
 
-const carlos = {
+const ander = {
   _id: new ObjectId(),
-  username: "carlos",
-  email: "carlos@ejemplo.com",
+  username: "Ander",
+  email: "ander@ejemplo.com",
   role: "user",
 };
 
 db.users.insertMany(
-  [admin, ana, bea, carlos].map((user) => ({
+  [karla, koldo, aurora, sofia, ander].map((user) => ({
     ...user,
     password: PASSWORD_HASH,
     createdAt: daysAgo(30),
@@ -146,10 +153,18 @@ const step = (order, description) => ({
   description,
 });
 
+// Usuario autorizado.
+// Guardamos el identificador y el nombre de usuario.
+const authorizedUser = (user) => ({
+  id: user._id,
+  username: user.username,
+});
+
 // Reseña embebida.
-// Solo guardamos userId, text y createdAt.
+// Guardamos también el nombre del usuario para mostrarlo sin populate.
 const review = (user, text, days = 1) => ({
   userId: user._id,
+  username: user.username,
   text,
   createdAt: daysAgo(days),
 });
@@ -174,6 +189,7 @@ const tortillaPatatas = recipe(
     description:
       "Tortilla de patatas tradicional, jugosa por dentro y dorada por fuera.",
     origin: "Receta de casa",
+    url: "",
     category: entrantes._id,
     difficulty: "medium",
     preparationTime: 15,
@@ -200,8 +216,8 @@ const tortillaPatatas = recipe(
     ],
 
     reviews: [
-      review(ana, "La receta de toda la vida. ¡Queda buenísima!", 5),
-      review(bea, "Yo le añado un poquito más de cebolla.", 3),
+      review(aurora, "La receta de toda la vida. ¡Queda buenísima!", 5),
+      review(sofia, "Yo le añado un poquito más de cebolla.", 3),
     ],
   },
   15
@@ -242,20 +258,21 @@ const ensaladaPasta = recipe(
     ],
 
     reviews: [
-      review(carlos, "Muy fácil y rápida para el verano.", 2),
+      review(ander, "Muy fácil y rápida para el verano.", 2),
     ],
   },
   12
 );
 
 // Receta 3: compartida con usuarios autorizados.
-// Solo Ana y Bea pueden consultarla, además del administrador.
+// Solo Aurora y Sofía pueden consultarla, además de los administradores.
 
 const albondigas = recipe(
   {
     name: "Albóndigas en salsa",
     description: "Albóndigas caseras con una salsa de verduras.",
     origin: "Mi madre",
+    url: "",
     category: carnes._id,
     difficulty: "medium",
     preparationTime: 25,
@@ -263,7 +280,10 @@ const albondigas = recipe(
     servings: 4,
     notes: "Están todavía más ricas de un día para otro.",
     visibility: "friends",
-    authorizedUsers: [ana._id, bea._id],
+    authorizedUsers: [
+      authorizedUser(aurora),
+      authorizedUser(sofia),
+    ],
 
     ingredients: [
       ingredient("Carne picada de ternera", 500, "g", "Carnicería"),
@@ -286,20 +306,21 @@ const albondigas = recipe(
     ],
 
     reviews: [
-      review(ana, "¡Las mejores albóndigas!", 4),
+      review(aurora, "¡Las mejores albóndigas!", 4),
     ],
   },
   10
 );
 
 // Receta 4: privada.
-// Solo el administrador puede consultarla.
+// Solo los administradores pueden consultarla.
 
 const merluza = recipe(
   {
     name: "Merluza en salsa verde",
     description: "Merluza cocinada con ajo, perejil y una salsa ligera.",
     origin: "Curso de cocina",
+    url: "",
     category: pescados._id,
     difficulty: "medium",
     preparationTime: 10,
@@ -367,8 +388,8 @@ const espaguetis = recipe(
     ],
 
     reviews: [
-      review(bea, "Muy buena, aunque hay que tener cuidado con el huevo.", 2),
-      review(carlos, "Una de mis recetas favoritas.", 1),
+      review(sofia, "Muy buena, aunque hay que tener cuidado con el huevo.", 2),
+      review(ander, "Una de mis recetas favoritas.", 1),
     ],
   },
   6
@@ -381,6 +402,7 @@ const tartaManzana = recipe(
     name: "Tarta de manzana",
     description: "Tarta casera de manzana con una base crujiente.",
     origin: "Prima Cruci",
+    url: "",
     category: postres._id,
     difficulty: "medium",
     preparationTime: 20,
@@ -411,7 +433,7 @@ const tartaManzana = recipe(
     ],
 
     reviews: [
-      review(ana, "La hice el fin de semana y salió estupenda.", 1),
+      review(aurora, "La hice el fin de semana y salió estupenda.", 1),
     ],
   },
   4
@@ -428,18 +450,34 @@ db.recipes.insertMany([
 
 // ─── Listas de la compra ─────────────────────────────────────────────────────
 
-// Lista creada por el administrador.
-// Se guardan las referencias a las recetas seleccionadas y los ingredientes
-// calculados. La lista es independiente de los cambios posteriores en recetas.
+// Lista creada por un administrador.
+//
+// Se guardan las referencias a las recetas seleccionadas mediante objetos
+// con su identificador y nombre.
+//
+// También se guardan los ingredientes y las cantidades calculadas.
+// La lista es independiente de los cambios posteriores en las recetas.
 
 const listaCompra = {
   _id: new ObjectId(),
-  userId: admin._id,
+
+  createdBy: {
+    id: karla._id,
+    username: karla.username,
+  },
+
   name: "Compra para el fin de semana",
 
+  // Cada receta conserva su identificador y su nombre.
   recipes: [
-    tortillaPatatas._id,
-    ensaladaPasta._id,
+    {
+      id: tortillaPatatas._id,
+      name: tortillaPatatas.name,
+    },
+    {
+      id: ensaladaPasta._id,
+      name: ensaladaPasta.name,
+    },
   ],
 
   items: [
@@ -529,12 +567,14 @@ db.recipes.createIndex({ category: 1 });
 db.recipes.createIndex({ visibility: 1 });
 db.recipes.createIndex({ name: 1 });
 
-// Facilitar la consulta de listas del administrador.
-db.shoppingLists.createIndex({ userId: 1 });
+// Facilitar la consulta de listas por administrador.
+db.shoppingLists.createIndex({ "createdBy.id": 1 });
+
+// ─── Resultado ───────────────────────────────────────────────────────────────
 
 print("✅ Recipia: datos iniciales cargados correctamente.");
-print("   - 4 usuarios (1 administrador y 3 usuarios)");
+print("   - 5 usuarios (2 administradores y 3 usuarios)");
 print("   - 6 categorías");
 print("   - 6 recetas");
 print("   - 1 lista de la compra");
-print("   - Contraseña de prueba: supersecreta");
+print("   - Contraseña de prueba: clavesecreta");
