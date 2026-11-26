@@ -66,4 +66,37 @@ const isAdmin = (req, res, next) => {
   next();
 };
 
-export { isAuthenticated, isAdmin };
+
+/**
+ * Autenticación opcional.
+ *
+ * Permite continuar sin token, pero si se proporciona uno, comprueba que sea válido.
+ *
+ * Si el token es válido, guarda el usuario en req.user.
+ * Si no hay token, continúa sin req.user.
+ * Si el token es inválido o ha caducado, devuelve HTTP 401.
+ */
+const isAuthenticatedOptional = (req, res, next) => {
+  const token = getToken(req);
+
+  // No hay token: continúa como usuario anónimo
+  if (!token) {
+    return next();
+  }
+
+  try {
+    const payload = jwt.verify(token, env.JWT_SECRET);
+
+    req.user = {
+      _id: payload._id,
+      role: payload.role,
+      username: payload.username,
+    };
+
+    next();
+  } catch {
+    next(new HttpError(401, "Token no válido o caducado"));
+  }
+};
+
+export { isAuthenticated, isAdmin, isAuthenticatedOptional};

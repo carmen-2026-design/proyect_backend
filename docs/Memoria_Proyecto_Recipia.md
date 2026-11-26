@@ -217,6 +217,70 @@ Cada ingrediente tendrá:
                                                   opcional. Obligatorio.
   -----------------------------------------------------------------------
 
+# Secciones del supermercado
+
+Las secciones del supermercado se comparten entre los ingredientes de
+las recetas (`Recipe.ingredients[].section`) y los artículos de las
+listas de la compra (`ShoppingList.items[].section`).
+
+Se utilizan códigos comunes para mantener una clasificación coherente y
+evitar denominaciones diferentes para una misma sección.
+
+## Secciones propuestas
+
+  -----------------------------------------------------------------------
+  Código                  Nombre visible          Ejemplos
+  ----------------------- ----------------------- -----------------------
+  `fruit_vegetables`      Frutas y verduras       Tomates, cebollas,
+                                                  lechugas, manzanas
+
+  `meat`                  Carnicería              Pollo, ternera, cerdo
+
+  `fish_seafood`          Pescadería              Merluza, gambas,
+                                                  bacalao
+
+  `dairy_eggs`            Lácteos y huevos        Leche, queso, yogures,
+                                                  huevos
+
+  `bakery`                Panadería               Pan, pan rallado, masas
+
+  `pasta_rice_legumes`    Pasta, arroz y          Espaguetis, arroz,
+                          legumbres               lentejas
+
+  `canned_preserves`      Conservas y envasados   Atún en conserva,
+                                                  tomate en lata,
+                                                  aceitunas
+
+  `oils_sauces`           Aceites, salsas y       Aceite de oliva,
+                          vinagres                mayonesa, vinagre
+
+  `spices_condiments`     Especias y condimentos  Sal, pimienta,
+                                                  pimentón, orégano
+
+  `frozen`                Congelados              Verduras congeladas,
+                                                  pescado congelado
+
+  `beverages`             Bebidas                 Agua, zumos, refrescos
+
+  `snacks_sweets`         Aperitivos y dulces     Frutos secos,
+                                                  chocolate, galletas
+
+  `other`                 Otros                   Ingredientes que no
+                                                  encajen en las
+                                                  categorías anteriores
+  -----------------------------------------------------------------------
+
+## Reglas de uso
+
+1.  Los códigos serán los valores almacenados en MongoDB.
+2.  Los nombres visibles se utilizarán en la interfaz.
+3.  Los modelos `Recipe` y `ShoppingList` utilizarán las mismas
+    constantes para validar el campo `section`.
+4.  Los ingredientes de las listas de la compra se agruparán por
+    sección.
+5.  Si un ingrediente no tiene una sección asignada, se utilizará
+    `other` como valor predeterminado.
+
 ### Unidades de medida
 
 Se utilizará un conjunto cerrado de unidades:
