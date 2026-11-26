@@ -4,6 +4,24 @@
 /** Roles de usuario */
 export const ROLES = Object.freeze(["user", "admin"]);
 
+/** Secciones del supermercado */
+export const INGREDIENT_SECTIONS = Object.freeze([
+  "fruit_vegetables",
+  "meat",
+  "fish_seafood",
+  "dairy_eggs",
+  "bakery",
+  "pasta_rice_legumes",
+  "canned_preserves",
+  "oils_sauces",
+  "spices_condiments",
+  "frozen",
+  "beverages",
+  "snacks_sweets",
+  "other",
+]);
+
+
 // /** Tecnologías que se pueden asignar a un bug */
 // export const TECHNOLOGIES = Object.freeze([
 //   "javascript", "typescript", "html", "css", "react",

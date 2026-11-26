@@ -13,7 +13,7 @@
 // Guardamos directamente su hash bcrypt (coste 10).
 
 const PASSWORD_HASH =
-  "$2b$10$JhvCYzyk8SEpHkjlOYy30.mSEU5BkpwQ8gBhcq6nUxzqDbPLO.ka2";
+  "$2b$10$SIP0rdAZEnYAVtdH8PZFv.sA.wtJmppWadu3mg/Vrh4cr9gzGR42G";
 
 const now = new Date();
 
@@ -156,7 +156,7 @@ const step = (order, description) => ({
 // Usuario autorizado.
 // Guardamos el identificador y el nombre de usuario.
 const authorizedUser = (user) => ({
-  id: user._id,
+  userId: user._id,
   username: user.username,
 });
 
@@ -366,8 +366,10 @@ const espaguetis = recipe(
     cookingTime: 15,
     servings: 2,
     notes: "Esta versión utiliza huevo y queso, sin nata.",
-    visibility: "public",
-    authorizedUsers: [],
+    visibility: "friends",
+    authorizedUsers: [
+      authorizedUser(ander),
+    ],
 
     ingredients: [
       ingredient("Espaguetis", 200, "g", "Pasta y arroz"),
@@ -387,10 +389,7 @@ const espaguetis = recipe(
       step(6, "Remover hasta conseguir una salsa cremosa."),
     ],
 
-    reviews: [
-      review(sofia, "Muy buena, aunque hay que tener cuidado con el huevo.", 2),
-      review(ander, "Una de mis recetas favoritas.", 1),
-    ],
+    reviews: [],
   },
   6
 );
@@ -409,8 +408,10 @@ const tartaManzana = recipe(
     cookingTime: 40,
     servings: 8,
     notes: "Dejar enfriar antes de servir.",
-    visibility: "public",
-    authorizedUsers: [],
+    visibility: "friends",
+    authorizedUsers: [
+      authorizedUser(aurora),
+    ],
 
     ingredients: [
       ingredient("Manzana", 3, "unit", "Frutas y verduras"),
@@ -577,4 +578,4 @@ print("   - 5 usuarios (2 administradores y 3 usuarios)");
 print("   - 6 categorías");
 print("   - 6 recetas");
 print("   - 1 lista de la compra");
-print("   - Contraseña de prueba: clavesecreta");
+print("   - Contraseña de prueba: Secreta-1");
