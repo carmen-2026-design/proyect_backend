@@ -8,6 +8,14 @@ const categorySchema = new Schema(
       trim: true,
       unique: true,
     },
+    slug: {
+      type: String,
+      required: [true, "El identificador de la categoría es obligatorio"],
+      unique: true,
+      lowercase: true,
+      trim: true,
+      immutable: true,
+    },
     description: {
       type: String,
       trim: true,

@@ -1,3 +1,4 @@
+
 // Datos iniciales de Recipia.
 //
 // Mongo ejecuta este script automáticamente SOLO la primera vez que arranca
@@ -9,11 +10,11 @@
 // Se ejecuta con mongosh dentro del contenedor.
 // "db" es la base de datos indicada en MONGO_INITDB_DATABASE.
 //
-// Todos los usuarios tienen la contraseña "supersecreta".
+// Todos los usuarios tienen la contraseña "Secreta-1".
 // Guardamos directamente su hash bcrypt (coste 10).
 
 const PASSWORD_HASH =
-  "$2b$10$SIP0rdAZEnYAVtdH8PZFv.sA.wtJmppWadu3mg/Vrh4cr9gzGR42G";
+  "$2b$10$.kXu7LLre5ivPJvGtr2PNeomd4co7YHUUt32ZLaGLq.Ipr00BrnDq";
 
 const now = new Date();
 
@@ -72,48 +73,48 @@ db.users.insertMany(
 const entrantes = {
   _id: new ObjectId(),
   name: "Entrantes",
+  slug: "entrantes",
   description: "Platos para comenzar una comida.",
-  illustration: "entrantes",
   isActive: true,
 };
 
 const ensaladas = {
   _id: new ObjectId(),
   name: "Ensaladas",
+  slug: "ensaladas",
   description: "Ensaladas y platos frescos.",
-  illustration: "ensaladas",
   isActive: true,
 };
 
 const carnes = {
   _id: new ObjectId(),
   name: "Carnes",
+  slug: "carnes",
   description: "Recetas elaboradas con carne.",
-  illustration: "carnes",
   isActive: true,
 };
 
 const pescados = {
   _id: new ObjectId(),
   name: "Pescados",
+  slug: "pescados",
   description: "Platos de pescado y marisco.",
-  illustration: "pescados",
   isActive: true,
 };
 
 const pasta = {
   _id: new ObjectId(),
   name: "Pasta",
+  slug: "pasta",
   description: "Recetas de pasta.",
-  illustration: "pasta",
   isActive: true,
 };
 
 const postres = {
   _id: new ObjectId(),
   name: "Postres",
+  slug: "postres",
   description: "Dulces y postres caseros.",
-  illustration: "postres",
   isActive: true,
 };
 
@@ -200,11 +201,11 @@ const tortillaPatatas = recipe(
     authorizedUsers: [],
 
     ingredients: [
-      ingredient("Patata", 600, "g", "Frutas y verduras"),
-      ingredient("Huevo", 6, "unit", "Huevos y lácteos"),
-      ingredient("Cebolla", 1, "unit", "Frutas y verduras", true),
-      ingredient("Aceite de oliva", 200, "ml", "Aceites"),
-      ingredient("Sal", 1, "pinch", "Especias"),
+      ingredient("Patata", 600, "g", "fruit_vegetables"),
+      ingredient("Huevo", 6, "unit", "dairy_eggs"),
+      ingredient("Cebolla", 1, "unit", "fruit_vegetables", true),
+      ingredient("Aceite de oliva", 200, "ml", "oils_sauces"),
+      ingredient("Sal", 1, "pinch", "spices_condiments"),
     ],
 
     steps: [
@@ -241,12 +242,12 @@ const ensaladaPasta = recipe(
     authorizedUsers: [],
 
     ingredients: [
-      ingredient("Macarrones", 160, "g", "Pasta y arroz"),
-      ingredient("Tomate cherry", 150, "g", "Frutas y verduras"),
-      ingredient("Atún en conserva", 1, "unit", "Conservas"),
-      ingredient("Huevo", 2, "unit", "Huevos y lácteos"),
-      ingredient("Aceite de oliva", 15, "ml", "Aceites"),
-      ingredient("Sal", 1, "pinch", "Especias"),
+      ingredient("Macarrones", 160, "g", "pasta_rice_legumes"),
+      ingredient("Tomate cherry", 150, "g", "fruit_vegetables"),
+      ingredient("Atún en conserva", 1, "unit", "canned_preserves"),
+      ingredient("Huevo", 2, "unit", "dairy_eggs"),
+      ingredient("Aceite de oliva", 15, "ml", "oils_sauces"),
+      ingredient("Sal", 1, "pinch", "spices_condiments"),
     ],
 
     steps: [
@@ -286,14 +287,14 @@ const albondigas = recipe(
     ],
 
     ingredients: [
-      ingredient("Carne picada de ternera", 500, "g", "Carnicería"),
-      ingredient("Huevo", 1, "unit", "Huevos y lácteos"),
-      ingredient("Pan rallado", 40, "g", "Panadería"),
-      ingredient("Cebolla", 2, "unit", "Frutas y verduras"),
-      ingredient("Zanahoria", 2, "unit", "Frutas y verduras"),
-      ingredient("Ajo", 2, "unit", "Frutas y verduras"),
-      ingredient("Harina", 30, "g", "Harinas"),
-      ingredient("Aceite de oliva", 50, "ml", "Aceites"),
+      ingredient("Carne picada de ternera", 500, "g", "meat"),
+      ingredient("Huevo", 1, "unit", "dairy_eggs"),
+      ingredient("Pan rallado", 40, "g", "bakery"),
+      ingredient("Cebolla", 2, "unit", "fruit_vegetables"),
+      ingredient("Zanahoria", 2, "unit", "fruit_vegetables"),
+      ingredient("Ajo", 2, "unit", "fruit_vegetables"),
+      ingredient("Harina", 30, "g", "bakery"),
+      ingredient("Aceite de oliva", 50, "ml", "oils_sauces"),
     ],
 
     steps: [
@@ -331,12 +332,12 @@ const merluza = recipe(
     authorizedUsers: [],
 
     ingredients: [
-      ingredient("Merluza", 400, "g", "Pescadería"),
-      ingredient("Ajo", 2, "unit", "Frutas y verduras"),
-      ingredient("Perejil", 1, "pinch", "Frutas y verduras"),
-      ingredient("Harina", 10, "g", "Harinas"),
-      ingredient("Caldo de pescado", 200, "ml", "Conservas"),
-      ingredient("Aceite de oliva", 20, "ml", "Aceites"),
+      ingredient("Merluza", 400, "g", "fish_seafood"),
+      ingredient("Ajo", 2, "unit", "fruit_vegetables"),
+      ingredient("Perejil", 1, "pinch", "fruit_vegetables"),
+      ingredient("Harina", 10, "g", "bakery"),
+      ingredient("Caldo de pescado", 200, "ml", "canned_preserves"),
+      ingredient("Aceite de oliva", 20, "ml", "oils_sauces"),
     ],
 
     steps: [
@@ -372,12 +373,12 @@ const espaguetis = recipe(
     ],
 
     ingredients: [
-      ingredient("Espaguetis", 200, "g", "Pasta y arroz"),
-      ingredient("Huevo", 2, "unit", "Huevos y lácteos"),
-      ingredient("Queso parmesano", 50, "g", "Huevos y lácteos"),
-      ingredient("Panceta", 100, "g", "Carnicería"),
-      ingredient("Pimienta", 1, "pinch", "Especias"),
-      ingredient("Sal", 1, "pinch", "Especias"),
+      ingredient("Espaguetis", 200, "g", "pasta_rice_legumes"),
+      ingredient("Huevo", 2, "unit", "dairy_eggs"),
+      ingredient("Queso parmesano", 50, "g", "dairy_eggs"),
+      ingredient("Panceta", 100, "g", "meat"),
+      ingredient("Pimienta", 1, "pinch", "spices_condiments"),
+      ingredient("Sal", 1, "pinch", "spices_condiments"),
     ],
 
     steps: [
@@ -414,13 +415,13 @@ const tartaManzana = recipe(
     ],
 
     ingredients: [
-      ingredient("Manzana", 3, "unit", "Frutas y verduras"),
-      ingredient("Harina", 200, "g", "Harinas"),
-      ingredient("Azúcar", 120, "g", "Despensa"),
-      ingredient("Huevo", 2, "unit", "Huevos y lácteos"),
-      ingredient("Leche", 200, "ml", "Huevos y lácteos"),
-      ingredient("Mantequilla", 80, "g", "Huevos y lácteos"),
-      ingredient("Levadura", 8, "g", "Despensa"),
+      ingredient("Manzana", 3, "unit", "fruit_vegetables"),
+      ingredient("Harina", 200, "g", "bakery"),
+      ingredient("Azúcar", 120, "g", "other"),
+      ingredient("Huevo", 2, "unit", "dairy_eggs"),
+      ingredient("Leche", 200, "ml", "dairy_eggs"),
+      ingredient("Mantequilla", 80, "g", "dairy_eggs"),
+      ingredient("Levadura", 8, "g", "other"),
     ],
 
     steps: [
@@ -459,66 +460,95 @@ db.recipes.insertMany([
 // También se guardan los ingredientes y las cantidades calculadas.
 // La lista es independiente de los cambios posteriores en las recetas.
 
-const listaCompra = {
+const listaCompraRealizada = {
   _id: new ObjectId(),
-
   createdBy: {
     id: karla._id,
     username: karla.username,
   },
-
-  name: "Compra para el fin de semana",
-
-  // Cada receta conserva su identificador y su nombre.
+  name: "Compra para la tortilla de patatas",
+  purchaseList: true,
   recipes: [
     {
       id: tortillaPatatas._id,
       name: tortillaPatatas.name,
     },
-    {
-      id: ensaladaPasta._id,
-      name: ensaladaPasta.name,
-    },
   ],
-
   items: [
     {
       name: "Patata",
       quantity: 600,
       unit: "g",
-      section: "Frutas y verduras",
+      section: "fruit_vegetables",
       observations: "",
-      purchased: false,
+      purchased: true,
     },
     {
       name: "Huevo",
-      quantity: 8,
+      quantity: 6,
       unit: "unit",
-      section: "Huevos y lácteos",
+      section: "dairy_eggs",
       observations: "",
-      purchased: false,
+      purchased: true,
     },
     {
       name: "Cebolla",
       quantity: 1,
       unit: "unit",
-      section: "Frutas y verduras",
+      section: "fruit_vegetables",
       observations: "Ingrediente opcional para la tortilla.",
+      purchased: true,
+    },
+    {
+      name: "Aceite de oliva",
+      quantity: 200,
+      unit: "ml",
+      section: "oils_sauces",
+      observations: "",
+      purchased: true,
+    },
+    {
+      name: "Sal",
+      quantity: 1,
+      unit: "pinch",
+      section: "spices_condiments",
+      observations: "",
+      purchased: true,
+    },
+  ],
+  createdAt: daysAgo(4),
+  updatedAt: daysAgo(2),
+  __v: 0,
+};
+
+const listaCompraPendiente = {
+  _id: new ObjectId(),
+  createdBy: {
+    id: koldo._id,
+    username: koldo.username,
+  },
+  name: "Compra para la ensalada de pasta",
+  purchaseList: false,
+  recipes: [
+    {
+      id: ensaladaPasta._id,
+      name: ensaladaPasta.name,
+    },
+  ],
+  items: [
+    {
+      name: "Macarrones",
+      quantity: 160,
+      unit: "g",
+      section: "pasta_rice_legumes",
+      observations: "",
       purchased: false,
     },
     {
       name: "Tomate cherry",
       quantity: 150,
       unit: "g",
-      section: "Frutas y verduras",
-      observations: "",
-      purchased: false,
-    },
-    {
-      name: "Macarrones",
-      quantity: 160,
-      unit: "g",
-      section: "Pasta y arroz",
+      section: "fruit_vegetables",
       observations: "",
       purchased: false,
     },
@@ -526,42 +556,50 @@ const listaCompra = {
       name: "Atún en conserva",
       quantity: 1,
       unit: "unit",
-      section: "Conservas",
+      section: "canned_preserves",
       observations: "",
-      purchased: true,
+      purchased: false,
+    },
+    {
+      name: "Huevo",
+      quantity: 2,
+      unit: "unit",
+      section: "dairy_eggs",
+      observations: "",
+      purchased: false,
     },
     {
       name: "Aceite de oliva",
-      quantity: 215,
+      quantity: 15,
       unit: "ml",
-      section: "Aceites",
+      section: "oils_sauces",
       observations: "",
       purchased: false,
     },
     {
       name: "Sal",
-      quantity: 2,
+      quantity: 1,
       unit: "pinch",
-      section: "Especias",
+      section: "spices_condiments",
       observations: "",
       purchased: false,
     },
   ],
-
-  createdAt: daysAgo(2),
+  createdAt: daysAgo(1),
   updatedAt: daysAgo(1),
   __v: 0,
 };
 
-db.shoppingLists.insertOne(listaCompra);
+db.shoppingLists.insertMany([listaCompraRealizada, listaCompraPendiente]);
 
 // ─── Índices ─────────────────────────────────────────────────────────────────
 
 // Evitar usuarios duplicados.
 db.users.createIndex({ email: 1 }, { unique: true });
 
-// Evitar categorías con el mismo nombre.
+// Evitar categorías duplicadas por nombre o slug.
 db.categories.createIndex({ name: 1 }, { unique: true });
+db.categories.createIndex({ slug: 1 }, { unique: true });
 
 // Facilitar búsquedas y filtros de recetas.
 db.recipes.createIndex({ category: 1 });
@@ -577,5 +615,5 @@ print("✅ Recipia: datos iniciales cargados correctamente.");
 print("   - 5 usuarios (2 administradores y 3 usuarios)");
 print("   - 6 categorías");
 print("   - 6 recetas");
-print("   - 1 lista de la compra");
-print("   - Contraseña de prueba: Secreta-1");
+print("   - 2 listas de la compra (1 realizada y 1 pendiente)");
+print("   - Contraseña de todos los usuarios: Secreta-1");

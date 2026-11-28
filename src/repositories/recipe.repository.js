@@ -13,7 +13,7 @@ const createRecipe = async (data) => {
 const getRecipes = async (filters = {}) => {
   return await RecipeModel.find(filters)
   .populate("category")
-  .sort({ name: 1 });
+  .sort({ name: 1 }); //ordena las recetas alfabéticamente
 };
 
 //Leer una receta

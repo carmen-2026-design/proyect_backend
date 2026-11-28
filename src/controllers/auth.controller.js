@@ -25,8 +25,9 @@ const register = async (req, res) => {
   const { username, email, password, passwordRepeat } = req.body;
 
   // Validamos la contraseña aquí porque Mongoose solo verá el hash (que siempre mide 60)
-  if (typeof password !== "string" || password.length < 8) {
-    throw new HttpError(400, "La contraseña debe tener al menos 8 caracteres");
+  if (typeof password !== "string" || password.length < 8 || !/[A-Z]/.test(password) || !/[a-z]/.test(password) || !/[0-9]/.test(password) || !/[!@#$%&*-]/.test(password)
+  ) {
+    throw new HttpError(400, "La contraseña debe tener al menos 8 caracteres, una mayúscula, una minúscula, un número y un carácter especial (! @ # $ % & * -)");
   }
   if (password !== passwordRepeat) {
     throw new HttpError(400, "Las contraseñas no coinciden");

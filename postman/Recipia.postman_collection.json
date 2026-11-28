@@ -1,0 +1,559 @@
+{
+	"info": {
+		"_postman_id": "6eec595e-538d-4b35-a470-e6bf2308fa71",
+		"name": "Recipia",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "60372912"
+	},
+	"item": [
+		{
+			"name": "0. Init",
+			"item": [
+				{
+					"name": "Esta vivo",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/health",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"health"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "1. Auth",
+			"item": [
+				{
+					"name": "Registro nuevo usuario (Zoe)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"Zoe\",\n  \"email\": \"zoe@ejemplo.com\",\n  \"password\": \"Secreta-1\",\n  \"passwordRepeat\": \"Secreta-1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Registro intentando ser admin → se ignora el rol",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"username\": \"listillo\",\n  \"email\": \"listillo@ejemplo.com\",\n  \"password\": \"Secreta-1\",\n  \"passwordRepeat\": \"Secreta-1\",\n  \"role\": \"admin\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/register",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login admin (Karla)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"karla@recipia.dev\",\n  \"password\": \"Secreta-1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login user (Aurora)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"aurora@ejemplo.com\",\n  \"password\": \"Secreta-1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Login user  (Ander)",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"email\": \"ander@ejemplo.com\",\n  \"password\": \"Secreta-1\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/auth/logout",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"logout"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Me con la cookie (sin cabecera)",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/auth/me",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"me"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "2. Categories",
+			"item": [
+				{
+					"name": "Lista de categorías",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/category",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"category"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "3. Recipes",
+			"item": [
+				{
+					"name": "Listar recetas",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/recipe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar recetas de category carne",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/recipe?category=carnes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "carnes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar recetas por parte del nombre",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/recipe?name=salsa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "salsa"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Listar recetas por parte del nombre y category",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/recipe?name=salsa&category=carnes",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe"
+							],
+							"query": [
+								{
+									"key": "name",
+									"value": "salsa"
+								},
+								{
+									"key": "category",
+									"value": "carnes"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear receta lasaña",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n  \"name\": \"Lasaña de carne\",\n  \"description\": \"Lasaña casera con carne picada, tomate y bechamel.\",\n  \"origin\": \"Curso de cocina\",\n  \"url\": \"\",\n  \"category\": \"carnes\",\n  \"difficulty\": \"medium\",\n  \"preparationTime\": 30,\n  \"cookingTime\": 45,\n  \"servings\": 4,\n  \"notes\": \"Dejar reposar unos minutos antes de servir.\",\n  \"visibility\": \"private\",\n  \"authorizedUsers\": [],\n  \"ingredients\": [\n    {\n      \"name\": \"Carne picada\",\n      \"quantity\": 500,\n      \"unit\": \"g\",\n      \"section\": \"meat\",\n      \"observations\": \"\",\n      \"optional\": false\n    },\n    {\n      \"name\": \"Tomate triturado\",\n      \"quantity\": 400,\n      \"unit\": \"g\",\n      \"section\": \"fruit_vegetables\",\n      \"observations\": \"\",\n      \"optional\": false\n    },\n    {\n      \"name\": \"Placas de lasaña\",\n      \"quantity\": 12,\n      \"unit\": \"unit\",\n      \"section\": \"pasta_rice_legumes\",\n      \"observations\": \"\",\n      \"optional\": false\n    },\n    {\n      \"name\": \"Leche\",\n      \"quantity\": 500,\n      \"unit\": \"ml\",\n      \"section\": \"dairy_eggs\",\n      \"observations\": \"\",\n      \"optional\": false\n    },\n    {\n      \"name\": \"Queso rallado\",\n      \"quantity\": 100,\n      \"unit\": \"g\",\n      \"section\": \"dairy_eggs\",\n      \"observations\": \"Para gratinar\",\n      \"optional\": true\n    }\n  ],\n  \"steps\": [\n    {\n      \"order\": 1,\n      \"description\": \"Preparar la carne picada en una sartén con un poco de aceite.\"\n    },\n    {\n      \"order\": 2,\n      \"description\": \"Añadir el tomate triturado y cocinar durante 15 minutos.\"\n    },\n    {\n      \"order\": 3,\n      \"description\": \"Preparar la bechamel calentando la leche y mezclándola con harina y mantequilla.\"\n    },\n    {\n      \"order\": 4,\n      \"description\": \"Montar la lasaña alternando placas, carne y bechamel.\"\n    },\n    {\n      \"order\": 5,\n      \"description\": \"Cubrir con queso rallado y hornear hasta que esté gratinada.\"\n    }\n  ]\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/recipe",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar receta albóndigas (ingredientes)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"ingredients\": [\n        {\n            \"name\": \"Carne picada de ternera\",\n            \"quantity\": 600,\n            \"unit\": \"g\",\n            \"section\": \"meat\",\n            \"observations\": \"\",\n            \"optional\": false\n        }\n    ]\n}\n\n",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/recipe/6b0ace26b33fbae7f9316f25",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe",
+								"6b0ace26b33fbae7f9316f25"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Modificar receta albóndigas (autorizados)",
+					"request": {
+						"method": "PATCH",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"visibility\": \"friends\",\n    \"authorizedUsers\": [\n        {\n            \"userId\": \"6b0aafdc518fa5f39f8cf2a4\",\n            \"username\": \"Aurora\"\n        },\n        {\n            \"userId\": \"6b0aafdc518fa5f39f8cf2a6\",\n            \"username\": \"Ander\"\n        }\n    ]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/recipe/6b0ace26b33fbae7f9316f25",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe",
+								"6b0ace26b33fbae7f9316f25"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar receta tortilla",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/recipe/6b0ace26b33fbae7f9316f23",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe",
+								"6b0ace26b33fbae7f9316f23"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "4. Reviews",
+			"item": [
+				{
+					"name": "Listar recetas de category postres",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/recipe?category=postres",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe"
+							],
+							"query": [
+								{
+									"key": "category",
+									"value": "postres"
+								}
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Crear reseña tarta manzana",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"text\": \"Me encanta poner reseñas en este post.\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/recipe/6b0ace26b33fbae7f9316f28/review",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe",
+								"6b0ace26b33fbae7f9316f28",
+								"review"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Eliminar reseña tarta manzana",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/api/recipe/6b0ace26b33fbae7f9316f28/review/6b0ad255cfcff7a52f7ea295",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"recipe",
+								"6b0ace26b33fbae7f9316f28",
+								"review",
+								"6b0ad255cfcff7a52f7ea295"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
