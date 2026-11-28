@@ -10,7 +10,7 @@ export default defineConfig({
       MONGO_PORT: "27017",
       MONGO_USER: "test",
       MONGO_PASSWORD: "test",
-      MONGO_DB: "bugpedia-test",
+      MONGO_DB: "recipia-test",
     },
   },
 });
