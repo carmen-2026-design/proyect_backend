@@ -417,6 +417,45 @@ eliminarla físicamente.
 Las recetas utilizarán ilustraciones genéricas asociadas a su categoría.
 No se gestionarán fotografías individuales.
 
+# Propuesta de valores para `slug` en Recipia
+
+El campo `slug` será un identificador único, fijo y estable para cada
+categoría. Se utilizará en las peticiones de la API y no dependerá del
+`_id` generado por MongoDB.
+
+## Valores propuestos
+
+  Categoría (`name`)   Identificador (`slug`)
+  -------------------- ------------------------
+  Carnes               `carnes`
+  Ensaladas            `ensaladas`
+  Entrantes            `entrantes`
+  Pasta                `pasta`
+  Pescados             `pescados`
+  Postres              `postres`
+
+## Normas para los valores de `slug`
+
+-   Utilizar siempre letras minúsculas.
+-   No utilizar espacios ni tildes.
+-   Si el nombre tiene varias palabras, separarlas con guiones (`-`).
+-   No utilizar caracteres especiales.
+-   Cada `slug` debe ser único.
+-   Una vez creada la categoría, su `slug` no se podrá modificar.
+
+## Ejemplo de categoría
+
+``` json
+{
+  "_id": "6b084eadd7d123fa93f408d3",
+  "name": "Carnes",
+  "slug": "carnes",
+  "description": "Recetas elaboradas con carne.",
+  "illustration": "carnes",
+  "isActive": true
+}
+```
+
 ------------------------------------------------------------------------
 
 # 5. Gestión de listas de la compra
@@ -837,3 +876,36 @@ gestionar usuarios, categorías, recetas, reseñas y listas de la compra.
 La arquitectura y los modelos de datos deberán permitir ampliar la
 aplicación en futuras fases sin tener que replantear la estructura
 principal del proyecto.
+
+## 1. Qué es lo mínimo y qué es extra (Danel)
+
+- **Mínimo:** lo que pide el enunciado. Con esto tu proyecto está completo.
+- **Recomendado:** lo que el enunciado recomienda o lo que usamos en el curso. Suma, y no es difícil.
+- **Extra:** puedes ignorarlo sin ningún problema. Está para quien quiera ir más allá.
+
+| Pieza | Nivel | Dónde está |
+|---|---|---|
+| Modelos con validaciones (`required`, `min`, `max`, `enum`...) | 🟢 Mínimo | `src/models/` |
+| 3 entidades: 2 colecciones + subdocumentos embebidos o `populate` | 🟢 Mínimo | `User`, `Bug` y sus `solutions` |
+| Registro y login con bcrypt y JWT | 🟢 Mínimo | `src/controllers/auth.controller.js` |
+| Middleware de login y de admin | 🟢 Mínimo | `src/middlewares/auth.middleware.js` |
+| Solo el autor o un admin pueden editar o borrar | 🟢 Mínimo | `src/utils/permissions.js` y los controladores |
+| Rutas, controladores y modelos en carpetas | 🟢 Mínimo | `src/routes/`, `src/controllers/`, `src/models/` |
+| Códigos de estado correctos y manejador de errores | 🟢 Mínimo | `src/middlewares/error.middleware.js` y `src/utils/HttpError.js` |
+| Al menos 4 tests (middleware de admin + una función propia) | 🟢 Mínimo | `__tests__/isAdmin.test.js` y `__tests__/permissions.test.js` |
+| README, `.env.example` y memoria | 🟢 Mínimo | Raíz del proyecto |
+| Capa de repositorios | 🟡 Recomendado | `src/repositories/` |
+| Filtro por query params (`?technology=react`) | 🟡 Recomendado | `getAll` en `bug.controller.js` |
+| JSDoc en controladores y middlewares | 🟡 Recomendado | Los comentarios `/** */` de cada función (en JavaScript, `npm run docs` genera la web) |
+| Colección de Postman | 🟡 Recomendado | `postman/` |
+| MongoDB con Docker Compose | 🟡 Recomendado | `docker-compose.yml` |
+| CORS (para que el frontend pueda llamar a la API) | 🟡 Recomendado | `src/index.js` |
+| TypeScript | ⚪ Extra | La carpeta `typescript/` (el mismo proyecto, con tipos) |
+| Variables de entorno validadas en un solo archivo | ⚪ Extra | `src/config/env.js` |
+| Datos iniciales (seed) | ⚪ Extra | `database/scripts/01-seed.js` |
+| Mongo Express | ⚪ Extra | `docker-compose.yml` |
+| Swagger | ⚪ Extra | `src/docs/` y `src/config/swagger.js` |
+| Token también por cookie, y logout | ⚪ Extra | `auth.controller.js` y `auth.middleware.js` |
+| Tests de `isAuthenticated`, `errorHandler` y `logout` | ⚪ Extra | `__tests__/` |
+
+---

@@ -1,11 +1,18 @@
 
 import mongoose from "mongoose";
-import { createRecipe, getRecipes, getRecipeById, updateRecipe, removeRecipe, addReview, deleteReview } from "../repositories/recipe.repository.js";
+import {
+  createRecipe,
+  getRecipes,
+  getRecipeById,
+  updateRecipe,
+  removeRecipe,
+  addReview,
+  deleteReview,
+} from "../repositories/recipe.repository.js";
 import { HttpError } from "../utils/HttpError.js";
-import recipeRouter from "../routes/recipe.routes.js";
 import { CategoryModel } from "../models/category.model.js";
 
-// ---Campos modificables de una receta
+// --- Campos modificables de una receta
 const editableFields = [
   "name",
   "description",
@@ -23,16 +30,31 @@ const editableFields = [
   "steps",
 ];
 
-// ---Filtrar los campos que se pueden modificar
-const getEditableData = (data) => {
-  return Object.fromEntries(
-    Object.entries(data).filter(([key]) =>
-      editableFields.includes(key)
-    )
+// --- Filtrar los campos que se pueden modificar
+const getEditableData = (data = {}) =>
+  Object.fromEntries(
+    Object.entries(data ?? {}).filter(([key]) => editableFields.includes(key))
   );
+
+// --- Buscar una categoría por su slug
+const getCategoryBySlug = async (slug) => {
+  if (typeof slug !== "string" || !slug.trim()) {
+    throw new HttpError(400, "El identificador de la categoría es obligatorio");
+  }
+
+  const category = await CategoryModel.findOne({
+    slug: slug.trim().toLowerCase(),
+    isActive: true,
+  });
+
+  if (!category) {
+    throw new HttpError(400, "La categoría no existe o no está activa");
+  }
+
+  return category;
 };
 
-// ---Comprobar acceso a una receta
+// --- Comprobar acceso a una receta
 const canAccessRecipe = (recipe, user) => {
   // Recetas públicas: cualquier persona
   if (recipe.visibility === "public") {
@@ -60,21 +82,8 @@ const canAccessRecipe = (recipe, user) => {
   return false;
 };
 
-//----------------Recetas
-// ---Crear una receta
-const create = async (req, res, next) => {
-  try {
-    const recipeData = getEditableData(req.body);
-
-    const recipe = await createRecipe(recipeData);
-
-    res.status(201).json(recipe);
-  } catch (error) {
-    next(error);
-  }
-};
-
-// ---Consultar todas las recetas
+//---------------- Recetas
+// --- Consultar todas las recetas
 const getAll = async (req, res, next) => {
   try {
     let filters = {};
@@ -100,21 +109,19 @@ const getAll = async (req, res, next) => {
       filters = { visibility: "public" };
     }
 
-    //---filtro por nombre de la categoría
+    // Filtro por slug de categoría
     if (req.query.category) {
-      const categoryName = req.query.category.trim();
-
-      const category = await CategoryModel.findOne({
-        name: { $regex: `^${categoryName}$`, $options: "i" },
-      });
-
-      // Si no existe la categoría, no hay recetas que devolver.
-      if (!category) {
-        return res.status(200).json([]);
-      }
-
+      const category = await getCategoryBySlug(req.query.category);
       filters.category = category._id;
     }
+
+    //Filtro por parte del nombre de la receta
+    if (req.query.name) {
+      filters.name = {
+      $regex: req.query.name.trim(),
+      $options: "i",  //no distingue mayúsculas y minúsculas
+    };
+}
 
     const recipes = await getRecipes(filters);
 
@@ -145,6 +152,23 @@ const getById = async (req, res, next) => {
   }
 };
 
+// --- Crear una receta
+const create = async (req, res, next) => {
+  try {
+    const data = getEditableData(req.body);
+
+    // Convertir el slug de la categoría en su ObjectId
+    const category = await getCategoryBySlug(data.category);
+    data.category = category._id;
+
+    const recipe = await createRecipe(data);
+
+    res.status(201).json(recipe);
+  } catch (error) {
+    next(error);
+  }
+};
+
 // --- Modificar una receta
 const update = async (req, res, next) => {
   try {
@@ -158,6 +182,12 @@ const update = async (req, res, next) => {
 
     if (Object.keys(recipeData).length === 0) {
       throw new HttpError(400, "No se han indicado campos para modificar");
+    }
+
+    // Convertir el slug en ObjectId si se modifica la categoría
+    if (Object.hasOwn(recipeData, "category")) {
+      const category = await getCategoryBySlug(recipeData.category);
+      recipeData.category = category._id;
     }
 
     const recipe = await updateRecipe(id, recipeData);
@@ -195,7 +225,8 @@ const remove = async (req, res, next) => {
   }
 };
 
-//-----------------Reseñas
+//----------------- Reseñas
+
 // --- Añadir una reseña
 const createReview = async (req, res, next) => {
   try {
@@ -261,7 +292,7 @@ const removeReview = async (req, res, next) => {
   }
 };
 
-export default{ 
+export default {
   getAll,
   getById,
   create,
@@ -270,5 +301,4 @@ export default{
   createReview,
   removeReview,
 };
-
 
